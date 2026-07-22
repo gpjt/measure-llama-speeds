@@ -20,7 +20,7 @@ import requests
 MODEL = "unsloth/Qwen3.6-35B-A3B-GGUF:UD-IQ4_NL_XL"
 PORT = 8000
 BASE_URL = f"http://localhost:{PORT}"
-NCMOE_VALUES = [0, 40, 20, 10, 5]  # adjust as the bisection narrows
+NCMOE_VALUES = list(range(41))
 LOAD_TIMEOUT_S = 300  # generous: HF cache hit is fast, cold download is not
 N_PREDICT = 6144
 CSV_PATH = Path("sweep_results.csv")
@@ -183,7 +183,7 @@ def main() -> None:
                 t = run_completion(n_predict=N_PREDICT)
                 prompt_tps = t.get("prompt_per_second")
                 gen_tps = t.get("predicted_per_second")
-                print(f"  prompt: {prompt_tps:.1f} t/s   gen: {gen_tps:.1f} t/s")
+                print(f"  prompt: {prompt_tps or 0:.1f} t/s   gen: {gen_tps or 0:.1f} t/s")
 
                 writer.writerow([
                     n, "yes", n_ctx, vram, rss,

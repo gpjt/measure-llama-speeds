@@ -25,15 +25,22 @@ LOAD_TIMEOUT_S = 300  # generous: HF cache hit is fast, cold download is not
 N_PREDICT = 6144
 CSV_PATH = Path("sweep_results.csv")
 
+
+AUSTEN = Path("austen.txt").read_text()
+
 USER_MSG = Path("user_message.txt").read_text() if Path("user_message.txt").exists() else (
     "Compose a poem -- a poem about a haircut! But lofty, tragic, timeless, "
     "full of love, treachery, retribution, quiet heroism in the face of certain "
     "doom! Six lines, cleverly rhymed, and every word beginning with the letter S!"
 )
 
-PROMPT = (
+TEST_PROMPT = (
     "<|im_start|>system\n"
     "You are a helpful assistant<|im_end|>\n"
+    "<|im_start|>user\n"
+    f"What do you think of this text? {AUSTEN}<|im_end|>\n"
+    "<|im_start|>assistant\n"
+    "That is the start of *Pride and Prejudice* by Jane Austen, and I think it is excellent.<|im_end|>\n"
     "<|im_start|>user\n"
     f"{USER_MSG}<|im_end|>\n"
     "<|im_start|>assistant\n"
@@ -123,7 +130,7 @@ def run_completion(n_predict: int) -> dict:
             "temperature": 0.6,
             "cache_prompt": False,
         },
-        timeout=300,
+        timeout=450,
     )
     r.raise_for_status()
     return r.json().get("timings", {})

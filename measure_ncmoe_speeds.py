@@ -34,7 +34,7 @@ USER_MSG = Path("user_message.txt").read_text() if Path("user_message.txt").exis
     "doom! Six lines, cleverly rhymed, and every word beginning with the letter S!"
 )
 
-TEST_PROMPT = (
+PROMPT = (
     "<|im_start|>system\n"
     "You are a helpful assistant<|im_end|>\n"
     "<|im_start|>user\n"

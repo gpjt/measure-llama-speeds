@@ -93,13 +93,19 @@ def get_n_ctx() -> int | None:
     return None
 
 
-def gpu_mem_used_mib() -> int:
+def server_vram_mib(pid: int) -> int:
     out = subprocess.check_output(
-        ["nvidia-smi", "--query-gpu=memory.used",
+        ["nvidia-smi", "--query-compute-apps=pid,used_memory",
          "--format=csv,noheader,nounits"],
         text=True,
     )
-    return int(out.strip().splitlines()[0])
+    for line in out.strip().splitlines():
+        if not line.strip():
+            continue
+        p, mem = (x.strip() for x in line.split(","))
+        if int(p) == pid:
+            return int(mem)
+    raise Exception(f"Could not find process {pid} in output!")
 
 
 def server_rss_mib(pid: int) -> int:
@@ -155,7 +161,7 @@ def main() -> None:
                     continue
 
                 n_ctx = get_n_ctx()
-                vram = gpu_mem_used_mib()
+                vram = server_vram_mib(proc.pid)
                 rss = server_rss_mib(proc.pid)
                 print(f"  n_ctx={n_ctx}  vram={vram} MiB  rss={rss} MiB")
 

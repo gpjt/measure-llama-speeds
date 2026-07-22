@@ -115,11 +115,10 @@ def server_rss_mib(pid: int) -> int:
 
 def run_completion(n_predict: int) -> dict:
     """Fire a completion at the native endpoint and return its timings."""
-    timeout = 120 + n_predict / 10
     r = requests.post(
         f"{BASE_URL}/completion",
         json={"prompt": PROMPT, "n_predict": n_predict, "temperature": 0.6},
-        timeout=timeout,
+        timeout=300,
     )
     r.raise_for_status()
     return r.json().get("timings", {})

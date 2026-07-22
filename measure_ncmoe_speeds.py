@@ -117,7 +117,12 @@ def run_completion(n_predict: int) -> dict:
     """Fire a completion at the native endpoint and return its timings."""
     r = requests.post(
         f"{BASE_URL}/completion",
-        json={"prompt": PROMPT, "n_predict": n_predict, "temperature": 0.6},
+        json={
+            "prompt": PROMPT,
+            "n_predict": n_predict,
+            "temperature": 0.6,
+            "cache_prompt": False,
+        },
         timeout=300,
     )
     r.raise_for_status()

@@ -22,7 +22,7 @@ PORT = 8000
 BASE_URL = f"http://localhost:{PORT}"
 NCMOE_VALUES = [0, 40, 20, 10, 5]  # adjust as the bisection narrows
 LOAD_TIMEOUT_S = 300  # generous: HF cache hit is fast, cold download is not
-N_PREDICT = 65536
+N_PREDICT = 6144
 CSV_PATH = Path("sweep_results.csv")
 
 USER_MSG = Path("user_message.txt").read_text() if Path("user_message.txt").exists() else (

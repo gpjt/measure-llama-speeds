@@ -1,5 +1,6 @@
 charts/
-sweep_results*.csv
+charts_vulkan/
+charts_cuda/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

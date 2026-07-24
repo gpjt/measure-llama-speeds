@@ -8,6 +8,7 @@ CSVs from re-running the same sweep), plotting a min-max band plus an
 average line per metric, in the xkcd/all-caps house style.
 """
 
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -155,5 +156,6 @@ def generate_offload_charts(csv_paths, output_dir):
 
 
 if __name__ == "__main__":
-    csv_paths = sorted(Path(".").glob("sweep_results_v*.csv"))
+    csv_paths = sys.argv[1:]
+    print(f"Charting {csv_paths}")
     generate_offload_charts(csv_paths, "charts")
